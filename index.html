@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kreativ AI — Prototype</title>
+<style>
+:root{--bg:#0a0b10;--panel:#12141d;--panel2:#181b27;--line:#292d3b;--text:#f4f5fb;--muted:#9ca3b8;--purple:#9b7cff;--cyan:#6de3df;--pink:#ff8dc7}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -10%,#29204b 0,transparent 42%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:100vh}
+.sidebar{border-right:1px solid var(--line);padding:25px 16px;background:#0c0d13d9;display:flex;flex-direction:column;gap:26px}
+.brand{display:flex;align-items:center;gap:11px;padding:0 8px}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;color:#11131b;font-weight:900;font-size:20px;box-shadow:0 5px 24px #9b7cff35}.brand strong{font-size:16px;letter-spacing:.2px}.brand small{display:block;color:var(--muted);font-size:11px}
+.navlabel{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#737a91;padding:0 12px;margin-bottom:7px}.nav{display:grid;gap:5px}.nav button{border:0;color:#b7bdd0;background:transparent;text-align:left;padding:11px 12px;border-radius:10px;display:flex;align-items:center;gap:11px}.nav button.active,.nav button:hover{background:#242035;color:white}.nav .ico{width:20px;text-align:center;font-size:17px}.sidebottom{margin-top:auto;background:linear-gradient(145deg,#201a36,#151823);border:1px solid #39314e;border-radius:15px;padding:15px}.sidebottom b{font-size:13px}.sidebottom p{font-size:12px;color:var(--muted);margin:6px 0 12px}.mini-btn{width:100%;border:1px solid #51456f;color:white;background:#2c2442;border-radius:9px;padding:9px}
+main{padding:28px clamp(18px,4vw,54px) 48px;max-width:1500px;width:100%;margin:0 auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:30px}.crumb{color:var(--muted);font-size:13px}.profile{display:flex;align-items:center;gap:10px;color:#cbd0df;font-size:13px}.avatar{width:34px;height:34px;border-radius:50%;background:#342b50;display:grid;place-items:center;color:#d7c9ff;font-weight:700}
+h1{font-size:clamp(28px,4vw,40px);line-height:1.12;letter-spacing:-1.2px;margin:0 0 10px}.gradient{background:linear-gradient(90deg,#c4a9ff,#73e5e0);color:transparent;background-clip:text}.intro{color:var(--muted);margin:0 0 28px;max-width:680px}
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:20px;align-items:start}.card{background:linear-gradient(180deg,#151722,#11131b);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 12px 40px #00000018}.cardhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.cardhead h2{font-size:16px;margin:0}.badge{font-size:11px;color:#b5a2ff;background:#2a2142;border:1px solid #453763;border-radius:99px;padding:5px 9px}
+.label{display:block;font-size:12px;color:#c3c8d8;font-weight:650;margin:18px 0 9px}.modes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.mode{border:1px solid #303447;background:#171a26;border-radius:12px;color:#bfc5d8;padding:13px 6px 11px;text-align:center;min-height:88px}.mode .modeico{display:block;font-size:22px;margin-bottom:6px}.mode span:last-child{font-size:11px}.mode.selected{border-color:var(--purple);background:#29213d;color:white;box-shadow:inset 0 0 0 1px #9b7cff35}.mode:focus-visible,button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+textarea{width:100%;resize:vertical;min-height:130px;background:#0e1018;color:white;border:1px solid #303447;border-radius:12px;padding:14px;line-height:1.55}textarea::placeholder{color:#687087}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{background:#0e1018;border:1px solid #303447;border-radius:10px;color:#eef0fa;padding:11px;width:100%}.helper{font-size:11px;color:#7f879e;margin-top:7px}.toggleline{display:flex;justify-content:space-between;align-items:center;margin-top:16px;color:#c3c8d8;font-size:12px}.switch{width:36px;height:20px;border-radius:99px;background:#383d4d;position:relative;border:0}.switch:after{content:"";position:absolute;width:14px;height:14px;top:3px;left:3px;background:white;border-radius:50%;transition:.2s}.switch.on{background:#7c63dc}.switch.on:after{left:19px}
+.primary{width:100%;margin-top:21px;border:0;border-radius:11px;padding:14px;background:linear-gradient(100deg,#9c7aff,#6eddd7);color:#10121a;font-weight:800;box-shadow:0 8px 22px #8972f52c}.primary:hover{filter:brightness(1.08)}.disclaimer{font-size:10px;color:#777f95;text-align:center;margin:10px 0 0}
+.preview{min-height:310px;border:1px dashed #3c4053;border-radius:14px;background:radial-gradient(ellipse at 50% 30%,#30264d 0,transparent 55%),#0d0f17;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;overflow:hidden;position:relative}.preview-icon{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;font-size:25px;background:#25203a;border:1px solid #463864;margin-bottom:14px}.preview h3{font-size:15px;margin:0 0 6px}.preview p{color:var(--muted);font-size:12px;max-width:260px;margin:0}.progresswrap{width:min(290px,100%);margin-top:18px;display:none}.progresslabel{display:flex;justify-content:space-between;color:#bfc5d8;font-size:11px;margin-bottom:7px}.track{height:6px;background:#2a2d3c;border-radius:10px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--cyan));transition:width .3s}
+.output{display:none;text-align:left;width:100%}.fakeframe{aspect-ratio:16/9;border-radius:12px;background:linear-gradient(135deg,#282244,#1b4550 50%,#11131b);display:grid;place-items:center;position:relative;overflow:hidden;margin-bottom:12px}.fakeframe:before{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:#c3a7ff35;filter:blur(4px);right:12%;top:-25px}.fakeframe:after{content:"";position:absolute;width:180px;height:80px;background:#73e5e035;filter:blur(18px);left:10%;bottom:-15px}.play{position:relative;z-index:1;width:48px;height:48px;border-radius:50%;border:1px solid #ffffff80;background:#ffffff20;color:white;font-size:20px}.output h3{font-size:14px;margin:0 0 5px}.output p{font-size:11px;color:var(--muted);margin:0 0 13px}.actions{display:flex;gap:8px}.secondary{border:1px solid #393e50;border-radius:9px;padding:9px 12px;color:#e1e4f0;background:#1b1e2a;font-size:12px}.secondary:hover{background:#272b3b}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.stat{border:1px solid #292d3b;background:#12141d;border-radius:10px;padding:11px}.stat b{display:block;font-size:16px}.stat small{font-size:10px;color:var(--muted)}
+.steps{margin-top:20px}.steps h2{font-size:14px;margin:0 0 13px}.step{display:flex;gap:11px;margin:12px 0;align-items:flex-start}.stepnum{flex:0 0 25px;height:25px;border-radius:8px;background:#28213c;color:#c6b6ff;display:grid;place-items:center;font-size:11px;font-weight:800}.step b{display:block;font-size:12px}.step small{color:var(--muted);font-size:11px}
+.notice{border:1px solid #4a3d27;background:#211b13;color:#cdbd9b;border-radius:10px;padding:11px 13px;font-size:11px;margin-top:18px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#e7fff9;color:#142321;border-radius:10px;padding:12px 16px;font-size:13px;box-shadow:0 8px 30px #0006;transition:.25s;z-index:9}.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{margin-top:32px;color:#676f85;font-size:10px;text-align:center}
+@media(max-width:980px){.app{grid-template-columns:1fr}.sidebar{display:none}main{padding:20px 16px 36px}.grid{grid-template-columns:1fr}.topbar{margin-bottom:25px}.card{padding:17px}}
+@media(max-width:430px){.modes{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}.profile span{display:none}.card{padding:15px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">✦</div><div><strong>Kreativ AI</strong><small>CRÉATION VIDÉO</small></div></div>
+  <div><div class="navlabel">Espace créatif</div><nav class="nav">
+    <button class="active" data-nav="Créer une vidéo"><span class="ico">✧</span>Créer une vidéo</button>
+    <button data-nav="Mes projets"><span class="ico">▧</span>Mes projets</button>
+    <button data-nav="Personnages"><span class="ico">◉</span>Personnages</button>
+    <button data-nav="Voix & audio"><span class="ico">♫</span>Voix & audio</button>
+  </nav></div>
+  <div><div class="navlabel">Outils</div><nav class="nav">
+    <button data-nav="Montage"><span class="ico">▤</span>Montage automatique</button>
+    <button data-nav="Bibliothèque"><span class="ico">▦</span>Bibliothèque</button>
+  </nav></div>
+  <div class="sidebottom"><b>✦ Prototype gratuit</b><p>Explore l'interface et teste le parcours de création. La génération réelle sera connectée plus tard.</p><button class="mini-btn" id="aboutBtn">Voir la feuille de route</button></div>
+</aside>
+<main>
+  <div class="topbar"><div class="crumb">Kreativ AI <span style="color:#555b70">/</span> <span id="crumbCurrent">Créer une vidéo</span></div><div class="profile"><span>Mode démonstration</span><div class="avatar">S</div></div></div>
+  <h1>Donne vie à tes <span class="gradient">idées.</span></h1>
+  <p class="intro">Des vidéos réalistes aux dessins animés, transforme une simple description en projet vidéo. Tout commence ici.</p>
+  <div class="grid">
+    <section class="card">
+      <div class="cardhead"><h2>Créer une vidéo</h2><span class="badge">BÊTA · DÉMO</span></div>
+      <label class="label">1. Choisis ton type de création</label>
+      <div class="modes" id="modes">
+        <button class="mode selected" data-mode="text"><span class="modeico">🎬</span><span>Texte → vidéo</span></button>
+        <button class="mode" data-mode="image"><span class="modeico">🖼️</span><span>Image → vidéo</span></button>
+        <button class="mode" data-mode="cartoon"><span class="modeico">🎨</span><span>Dessin animé</span></button>
+        <button class="mode" data-mode="realistic"><span class="modeico">🌄</span><span>Réaliste</span></button>
+      </div>
+      <div id="uploadArea" style="display:none">
+        <label class="label" for="imageUpload">Importer une image de départ</label>
+        <input class="field" type="file" id="imageUpload" accept="image/*">
+        <div class="helper">Prototype : le fichier reste sur cet appareil et n'est pas envoyé.</div>
+      </div>
+      <label class="label" for="prompt">2. Décris la vidéo que tu imagines</label>
+      <textarea id="prompt" placeholder="Ex. : Un petit robot traverse une ville futuriste au coucher du soleil. Caméra fluide, lumière cinématographique, ambiance merveilleuse..."></textarea>
+      <div class="helper">Astuce : précise le sujet, l'action, le décor, le mouvement de caméra et l'ambiance.</div>
+      <div class="row">
+        <div><label class="label" for="style">Style visuel</label><select class="field" id="style"><option>Cinématographique</option><option>Photorealiste</option><option>3D stylisé</option><option>Dessin animé 2D</option><option>Anime</option><option>Documentaire</option><option>Publicité premium</option></select></div>
+        <div><label class="label" for="format">Format vidéo</label><select class="field" id="format"><option value="9:16">Vertical · 9:16</option><option value="16:9">Paysage · 16:9</option><option value="1:1">Carré · 1:1</option></select></div>
+      </div>
+      <div class="row">
+        <div><label class="label" for="duration">Durée visée</label><select class="field" id="duration"><option>5 secondes</option><option selected>10 secondes</option><option>15 secondes</option><option>30 secondes (assemblage)</option><option>60 secondes (assemblage)</option></select></div>
+        <div><label class="label" for="scenes">Nombre de scènes</label><select class="field" id="scenes"><option>1 scène</option><option selected>3 scènes</option><option>5 scènes</option><option>8 scènes</option></select></div>
+      </div>
+      <div class="toggleline"><span>Prévoir une narration / voix IA</span><button class="switch on" id="voiceSwitch" aria-label="Activer la voix IA" aria-pressed="true"></button></div>
+      <div class="toggleline"><span>Prévoir des sous-titres</span><button class="switch on" id="subSwitch" aria-label="Activer les sous-titres" aria-pressed="true"></button></div>
+      <button class="primary" id="generateBtn">✦ Préparer ma vidéo</button>
+      <p class="disclaimer">Prototype d'interface : aucune vidéo réelle n'est générée pour le moment.</p>
+    </section>
+    <section>
+      <div class="card">
+        <div class="cardhead"><h2>Aperçu du projet</h2><span class="badge" id="statusBadge">EN ATTENTE</span></div>
+        <div class="preview" id="preview">
+          <div id="emptyState"><div class="preview-icon">▶</div><h3>Ton prochain projet commence ici</h3><p>Décris une idée puis clique sur « Préparer ma vidéo » pour tester le parcours de création.</p></div>
+          <div class="progresswrap" id="progressWrap"><div class="progresslabel"><span id="progressText">Préparation du projet…</span><span id="progressPct">0%</span></div><div class="track"><div class="bar" id="progressBar"></div></div></div>
+          <div class="output" id="output">
+            <div class="fakeframe"><button class="play" id="playBtn" aria-label="Aperçu de démonstration">▶</button></div>
+            <h3 id="outputTitle">Projet de démonstration</h3><p id="outputDesc">Maquette visuelle — aucune vidéo réelle n'a été générée.</p>
+            <div class="actions"><button class="secondary" id="copyBtn">Copier le prompt</button><button class="secondary" id="resetBtn">Nouveau projet</button></div>
+          </div>
+        </div>
+        <div class="stats"><div class="stat"><b id="statScenes">3</b><small>Scènes prévues</small></div><div class="stat"><b id="statFormat">9:16</b><small>Format</small></div><div class="stat"><b id="statVoice">Oui</b><small>Voix IA prévue</small></div></div>
+      </div>
+      <div class="card steps">
+        <h2>Comment ça fonctionnera à terme</h2>
+        <div class="step"><div class="stepnum">1</div><div><b>Comprendre ton idée</b><small>L'IA structure le prompt et découpe le récit en scènes.</small></div></div>
+        <div class="step"><div class="stepnum">2</div><div><b>Générer les plans</b><small>Un moteur vidéo compatible crée les séquences une par une.</small></div></div>
+        <div class="step"><div class="stepnum">3</div><div><b>Ajouter voix et audio</b><small>Narration, ambiance sonore et sous-titres si souhaités.</small></div></div>
+        <div class="step"><div class="stepnum">4</div><div><b>Assembler et exporter</b><small>Montage des scènes et export dans le format choisi.</small></div></div>
+        <div class="notice">🔒 Sécurité : ne saisis pas de données personnelles ou confidentielles dans cette maquette. Les fonctions IA et le stockage ne sont pas connectés.</div>
+      </div>
+    </section>
+  </div>
+  <footer>KREATIV AI · Prototype de démonstration · Version 0.1 · Génération vidéo non connectée</footer>
+</main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const $=id=>document.getElementById(id);
+let mode='text', voice=true, subs=true, timer=null;
+const modeNames={text:'Texte → vidéo',image:'Image → vidéo',cartoon:'Dessin animé',realistic:'Vidéo réaliste'};
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800)}
+document.querySelectorAll('.mode').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.mode').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');mode=b.dataset.mode;$('uploadArea').style.display=mode==='image'?'block':'none';$('style').value=mode==='cartoon'?'Dessin animé 2D':mode==='realistic'?'Photorealiste':$('style').value;if(mode==='cartoon')$('prompt').placeholder='Ex. : Un personnage violet entre dans un bureau absurde et découvre une machine qui transforme les idées en formulaires...';else if(mode==='image')$('prompt').placeholder='Décris les mouvements à donner à ton image : la caméra avance lentement, le personnage sourit...';else $('prompt').placeholder='Ex. : Un petit robot traverse une ville futuriste au coucher du soleil. Caméra fluide, lumière cinématographique...';}));
+function toggle(id,key){const b=$(id);b.classList.toggle('on');const on=b.classList.contains('on');b.setAttribute('aria-pressed',String(on));if(key==='voice')voice=on;else subs=on;updateStats()}
+$('voiceSwitch').addEventListener('click',()=>toggle('voiceSwitch','voice'));$('subSwitch').addEventListener('click',()=>toggle('subSwitch','subs'));
+function updateStats(){$('statScenes').textContent=$('scenes').value.split(' ')[0];$('statFormat').textContent=$('format').value;$('statVoice').textContent=voice?'Oui':'Non'}
+['scenes','format'].forEach(id=>$(id).addEventListener('change',updateStats));
+$('generateBtn').addEventListener('click',()=>{const prompt=$('prompt').value.trim();if(!prompt){toast('Décris d’abord la vidéo que tu veux créer.');$('prompt').focus();return}if(mode==='image'&&!$('imageUpload').files.length){toast('Choisis une image de départ pour ce mode.');return}if(timer)clearInterval(timer);$('emptyState').style.display='none';$('output').style.display='none';$('progressWrap').style.display='block';$('statusBadge').textContent='PRÉPARATION';$('generateBtn').disabled=true;$('generateBtn').textContent='Préparation en cours…';let n=0;const labels=['Analyse de ta description…','Organisation des scènes…','Préparation de la voix et du montage…','Maquette prête'];$('progressText').textContent=labels[0];timer=setInterval(()=>{n=Math.min(100,n+10);$('progressPct').textContent=n+'%';$('progressBar').style.width=n+'%';$('progressText').textContent=labels[Math.min(3,Math.floor(n/30))];if(n>=100){clearInterval(timer);$('progressWrap').style.display='none';$('output').style.display='block';$('statusBadge').textContent='MAQUETTE PRÊTE';$('outputTitle').textContent=modeNames[mode]+' · '+$('duration').value;$('outputDesc').textContent='Style : '+$('style').value+' · '+$('scenes').value+' · Format '+$('format').value+'. Ceci est une simulation visuelle, pas un fichier vidéo.';$('generateBtn').disabled=false;$('generateBtn').textContent='✦ Préparer ma vidéo';toast('Maquette prête ! La génération vidéo réelle reste à connecter.')}} ,220)});
+$('copyBtn').addEventListener('click',async()=>{const prompt=$('prompt').value.trim();try{await navigator.clipboard.writeText(prompt);toast('Prompt copié.')}catch(e){$('prompt').select();toast('Sélectionne le texte puis copie-le.')}});
+$('resetBtn').addEventListener('click',()=>{$('prompt').value='';$('output').style.display='none';$('emptyState').style.display='block';$('statusBadge').textContent='EN ATTENTE';$('progressBar').style.width='0%';$('prompt').focus()});
+$('playBtn').addEventListener('click',()=>toast('Aperçu illustratif uniquement : aucun clip vidéo n’est encore généré.'));
+$('aboutBtn').addEventListener('click',()=>toast('Étapes suivantes : choisir les API, connecter la génération, puis ajouter comptes et paiement.'));
+document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-nav]').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('crumbCurrent').textContent=b.dataset.nav;if(b.dataset.nav!=='Créer une vidéo')toast('Section '+b.dataset.nav+' : prévue dans une prochaine version.')})); 
+</script>
+</body>
+</html>
